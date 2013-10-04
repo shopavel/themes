@@ -1,0 +1,23 @@
+{
+    "name": "shopavel/themes",
+    "description": "Themes package for Shopavel",
+    "authors": [
+        {
+            "name": "Laurence Roberts",
+            "email": "lsjroberts@outlook.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "~4",
+        "jasonlewis/basset": "dev-master",
+        "natxet/CssMin": "dev-master",
+        "linkorb/jsmin-php": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Shopavel\\Themes": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
