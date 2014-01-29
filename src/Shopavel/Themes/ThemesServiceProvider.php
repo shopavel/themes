@@ -18,7 +18,7 @@ class ThemesServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('shopavel/themes');
+		$this->package('shopavel/themes', 'shopavel/themes', __DIR__.'/../../');
 
 		include __DIR__.'/../../routes.php';
 	}
@@ -30,13 +30,46 @@ class ThemesServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->registerThemeManager();
+
+		$this->registerViewFinder();
+	}
+
+	public function registerThemeManager()
+	{
 		$this->app['themes'] = $this->app->share(function($app)
 		{
-			$manager = new ThemeManager($app['config']->get('shopavel::theme'), $app['view']);
+			$manager = new ThemeManager($app['config']->get('shopavel/themes::theme'), $app['view']);
 
 			$manager->registerAssets();
 
+			$directories = $app['files']->directories(app_path() . '/../themes');
+
+			foreach ($directories as $directory)
+			{
+				$app['view']->addNamespace(basename($directory), $directory . '/views/');
+			}
+
 			return $manager;
+		});
+	}
+
+	/**
+	 * Register the view finder implementation.
+	 *
+	 * @return void
+	 */
+	public function registerViewFinder()
+	{
+		$this->app['view.finder'] = $this->app->share(function($app)
+		{
+			$paths = $app['config']['view.paths'];
+
+			$finder = new FileViewFinder($app['files'], $paths);
+
+			$finder->setNamespace($app['config']->get('shopavel/themes::theme'));
+
+			return $finder;
 		});
 	}
 

@@ -4,7 +4,7 @@ class ThemeManager {
 
     /**
      * Determines which theme to load.
-     * 
+     *
      * @var string
      */
     protected $theme;
@@ -66,18 +66,18 @@ class ThemeManager {
 
     /**
      * Return the view inside the loaded theme.
-     * 
+     *
      * @param  string $view
      * @return string
      */
     public function view($view)
     {
-        return $this->theme . '/views/' . $view;
+        return $this->theme . '::' . $view;
     }
 
     /**
      * Make a view inside the loaded theme.
-     * 
+     *
      * @param  string $view
      * @return \Illuminate\View\View
      */
