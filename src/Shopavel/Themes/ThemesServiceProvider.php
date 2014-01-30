@@ -18,7 +18,7 @@ class ThemesServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('shopavel/themes', 'shopavel/themes', __DIR__.'/../../');
+		$this->package('shopavel/themes', 'shopavel/themes', __DIR__ . '/../..');
 
 		include __DIR__.'/../../routes.php';
 	}
@@ -39,7 +39,7 @@ class ThemesServiceProvider extends ServiceProvider {
 	{
 		$this->app['themes'] = $this->app->share(function($app)
 		{
-			$manager = new ThemeManager($app['config']->get('shopavel/themes::theme'), $app['view']);
+			$manager = new ThemeManager($app['config']->get('shopavel/themes::config.theme'), $app['view']);
 
 			$manager->registerAssets();
 
@@ -51,6 +51,11 @@ class ThemesServiceProvider extends ServiceProvider {
 			}
 
 			return $manager;
+		});
+
+		$this->app->bind('Shopavel\Themes\ThemeManager', function($app)
+		{
+			return $app['themes'];
 		});
 	}
 
@@ -80,7 +85,7 @@ class ThemesServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array('themes');
+		return array('themes', 'view.finder');
 	}
 
 }
